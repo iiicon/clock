@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>clock</title>
+	<style>
+	body{
+		text-align: center;
+	}
+	#can{
+		width: 500px;
+		height:500px;
+		
+		border:1px solid red;
+	}
+	</style>
+</head>
+<body>
+	<canvas width=500 height=500 id="can"></canvas>
+</body>
+<script>
+	var o = can.getContext('2d');
+	
+	clock();
+	setInterval(clock,1000);
+	function clock(){
+		o.save();
+		o.clearRect(0,0,500,500);
+		o.translate(250,250);
+		o.beginPath();
+		o.strokeStyle = "#666";
+		o.lineWidth = "8";
+		o.arc(0,0,150,0,Math.PI*2);
+		o.closePath();
+		o.stroke();
+		o.beginPath();
+		o.lineWidth = "4";
+		o.arc(0,0,140,0,Math.PI*2);
+		// var grd = o.createLinearGradient(0,0,150,150);
+		// grd.addColorStop(0,"#ccc");
+		// grd.addColorStop(0,"#000")
+		// o.fillStyle = grd;
+		// o.fillarc(0,0,300,300)
+		o.stroke();
+		//
+		var data = new Date();
+		var h = data.getHours();
+		h = h>12?h-12:h;
+		var m = data.getMinutes();
+		var s = data.getSeconds();
+		var ha = h*Math.PI/6 + m/60*Math.PI/6 + s/3600*Math.PI/6;
+		var ma = m*Math.PI/30 + s/60*Math.PI/30;
+		var sa = s*Math.PI/30;
+		
+		for (var i = 0; i < 12; i++) {
+				o.beginPath();
+				o.lineTo(127,0);
+				o.lineTo(140,0);
+				o.lineWidth = "4";
+				o.rotate(Math.PI/6);
+				o.closePath();
+				o.stroke();
+
+		};
+		for (var i = 0; i < 60; i++) {
+			if(i%5!=0){
+				o.beginPath();
+				o.lineTo(135,0);
+				o.lineTo(140,0);
+				o.lineWidth = "3";
+				// o.strokeStyle = "red";
+				o.rotate(Math.PI/30);
+				o.closePath();
+				o.stroke();
+			}else{
+				o.beginPath();
+				o.rotate(Math.PI/30);
+				o.closePath();
+			}
+		};
+		
+		//时针
+		o.save()
+		o.beginPath();
+		o.rotate(ha);
+		o.rotate(-Math.PI/2);
+		o.lineTo(-10,0);
+		o.lineTo(55,0);
+		o.lineWidth = "8";
+		o.lineCap = "round";
+		
+		o.stroke();
+		o.closePath();
+		o.restore();
+
+		//分钟
+		o.save();
+		o.beginPath();
+		o.rotate(ma);
+		o.rotate(-Math.PI/2);
+		o.lineTo(-10,0);
+		o.lineTo(95,0);
+		o.lineCap = "round";
+		o.lineWidth = "6";
+		
+		o.stroke();
+		o.closePath();
+		o.restore();
+
+		//秒针
+		o.save();
+		o.beginPath();
+		o.rotate(sa);
+		o.rotate(-Math.PI/2);
+		o.lineTo(-10,0);
+		o.lineTo(115,0);
+		o.lineCap = "round";
+		o.lineWidth = "4";
+		o.strokeStyle = "red";
+		o.fillStyle = "red";
+		o.arc(0,0,5,0,Math.PI*2)
+		// o.fill();
+		o.stroke();
+		o.closePath();
+		o.restore();
+		o.restore();
+	}
+	
+
+</script>
+</html>
